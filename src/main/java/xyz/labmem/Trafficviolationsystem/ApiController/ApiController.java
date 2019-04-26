@@ -60,7 +60,6 @@ public class ApiController {
                     return ResultVOUtil.error("车牌号有误，请先确认车牌号");
             } else
                 return ResultVOUtil.error("车牌号有误，请先确认车牌号");
-            System.out.println(carEntity.getId());
             if (Id.trim().length() != 7)
                 return ResultVOUtil.error("请输入7位违章编号");
             if (address.trim().length() > 200 || address.trim().length() < 1)
