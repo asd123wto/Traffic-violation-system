@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>管理页面</title>
+</head>
+<body>
+<h1 style="text-align: center">添加交通违章通知书</h1>
+<div style="text-align: center;margin:0 auto;width: 75%">
+    <h3 style="text-align: right"><a href="/">处罚列表</a> <a href="/addDirver">添加驾驶员</a> <a href="/addCar">添加车辆</a></h3>
+    <div>
+        <label>请输入违章车牌号（例：宁A-12345）</label> <input type="text" id="numberPlate"/>
+        <input type="button" value="确认" onclick="determine()">
+        <br><br>
+        <label>请输入违章编号</label> <input type="text" id="Id"/><br><br>
+        <label>请输入违章地点</label> <input type="text" id="address"/><br><br>
+        <label>请输入违章记载</label> <textarea rows="3" id="record"></textarea><br><br>
+        <label>请输入违章时间</label> <input type="date" id="violation"/><br><br>
+        <label>请输选择处罚方式</label>
+        <label><input name="dtype" type="checkbox" value="1"/>警告 </label>
+        <label><input name="dtype" type="checkbox" value="2"/>罚款 </label>
+        <label><input name="dtype" type="checkbox" value="3"/>暂扣驾驶证 </label><br>
+        <label>请输入警察签字</label> <input type="text" id="policeName"/><br><br>
+        <label>请输入警察编号</label> <input type="text" id="policeNo"/><br><br>
+        <label>请输入被处罚人姓名</label> <input type="text" id="partyName"/><br><br><br>
+        <input type="button" value="保存违章通知书" onclick="save()"/>
+    </div>
+</div>
+</body>
+<script src="/js/jquery.min.js"></script>
+<script>
+    //确认违章车牌号
+    function determine() {
+        var numberPlate = $("#numberPlate").val();
+        var data = {
+            'NumberPlate': numberPlate
+        };
+        $.post("/determineNP", data, function (result) {
+            if (result.code == 200)
+                alert("车牌号：" + result.data.numberPlate + "\n" +
+                    "型号：" + result.data.model + "\n" + "持有人：" + result.data.dirverEntity.name +
+                    "\n驾驶证号：" + result.data.dirverEntity.num);
+            else {
+                alert(result.msg);
+            }
+        });
+    }
+
+    function save() {
+        var numberPlate = $("#numberPlate").val();
+        var Id = $("#Id").val();
+        var address = $("#address").val();
+        var record = $("#record").val();
+        var violation = $("#violation").val();
+        var policeName = $("#policeName").val();
+        var policeNo = $("#policeNo").val();
+        var partyName = $("#partyName").val();
+        var str = "{";
+        var i = 0;
+        var j = 0;
+        $('input:checkbox').each(function () {
+            i++;
+            if ($(this).prop('checked')) {
+                j++;
+                if (i < 3)
+                    str = str + "\"" + $(this).val() + "\"" + ":1,";
+                else
+                    str = str + "\"" + $(this).val() + "\"" + ":1}";
+            } else {
+                if (i < 3)
+                    str = str + "\"" + $(this).val() + "\"" + ":0,";
+                else
+                    str = str + "\"" + $(this).val() + "\"" + ":0}";
+            }
+        });
+        if (j != 0) {
+            var data = {
+                'numberPlate': numberPlate,
+                'Id': Id,
+                'address': address,
+                'record': record,
+                'violation': violation,
+                'punishment': str,
+                'policeName': policeName,
+                'policeNo': policeNo,
+                'partyName': partyName
+            };
+            $.post("/addTicket", data, function (result) {
+                if (result.code == 200) {
+                    alert("保存成功");
+                    window.location.href = "Ticket/" + Id;
+                } else
+                    alert(result.msg);
+            });
+        } else
+            alert("请选择一种处罚方式")
+    }
+
+</script>
+</html>

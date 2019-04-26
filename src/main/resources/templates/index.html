@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>交通违章处罚系统</title>
+</head>
+<body>
+<h2 style="text-align: center">交通违章处罚通知书列表</h2>
+<div style="text-align: center;margin:0 auto;width: 75%">
+    <h3 style="text-align: right"><a href="/addTicket">后台</a></h3>
+    <table border="1" cellspacing="0" style="margin:0 auto;width: 100%">
+        <tr>
+            <td>处罚编号*</td>
+            <td>处罚姓名</td>
+            <td>驾驶执照号</td>
+            <td>机动车牌号</td>
+            <td>违章日期</td>
+            <td>操作</td>
+        </tr>
+        <tr th:each="Ticket:${Tickets}">
+            <td th:text="${Ticket.getId()}"></td>
+            <td th:text="${Ticket.getCarEntity().getDirverEntity().getName()}"></td>
+            <td th:text="${Ticket.getCarEntity().getDirverEntity().getNum()}"></td>
+            <td th:text="${Ticket.getCarEntity().getNumberPlate()}"></td>
+            <td th:text="${Conversion.dateToStrLong(Ticket.getViolationDate())}"></td>
+            <td><a th:href="@{'/Ticket/'+${Ticket.getId()}}">详情</a></td>
+        </tr>
+    </table>
+</div>
+
+</body>
+</html>

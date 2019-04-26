@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>管理页面</title>
+</head>
+<body>
+<h1 style="text-align: center">添加驾驶员信息</h1>
+<div style="text-align: center;margin:0 auto;width: 75%">
+    <h3 style="text-align: right"><a href="/">处罚列表</a> <a href="/addTicket">添加违章通知</a> <a href="/addCar">添加车辆</a></h3>
+    <div>
+        <label>请输入驾驶员姓名</label> <input type="text" id="dirverName"/><br><br>
+        <label>请输入驾驶执照号</label> <input type="text" id="dirverNo"/><br><br>
+        <label>请输入地址</label> <input type="text" id="address"/><br><br>
+        <label>请输入邮编</label> <input type="text" id="zip"/><br><br>
+        <label>请输入电话</label> <input type="text" id="phone"/><br><br>
+        <input type="button" value="保存驾驶员信息" onclick="save()"/>
+    </div>
+</div>
+</body>
+<script src="/js/jquery.min.js"></script>
+<script>
+
+    function save() {
+        var dirverName=$("#dirverName").val();
+        var dirverNo=$("#dirverNo").val();
+        var address=$("#address").val();
+        var zip=$("#zip").val();
+        var phone=$("#phone").val();
+        var data = {
+            'dirverName': dirverName,
+            'dirverNo': dirverNo,
+            'address': address,
+            'zip': zip,
+            'phone': phone
+        };
+        $.post("/addDirver", data, function (result) {
+            if (result.code == 200) {
+                alert("保存成功");
+            } else
+                alert(result.msg);
+        });
+    }
+</script>
+</html>

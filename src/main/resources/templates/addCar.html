@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>管理页面</title>
+</head>
+<body>
+<h1 style="text-align: center">添加车辆信息</h1>
+<div style="text-align: center;margin:0 auto;width: 75%">
+    <h3 style="text-align: right"><a href="/">处罚列表</a> <a href="/addDirver">添加驾驶员</a> <a href="/addTicket">添加交通违章通知书</a>
+    </h3>
+    <div>
+        <label>请输入驾驶执照号（18位）</label> <input type="text" id="DirverNo"/>
+        <input type="button" value="确认" onclick="determine()">
+        <br><br>
+        <label>请输入机动车牌照号(例：宁A-32154)</label> <input type="text" id="number_plate"/><br><br>
+        <label>请输入机动车型号</label> <input type="text" id="model"/><br><br>
+        <label>请输入机动车制造厂</label> <input type="text" id="manufacturer"/><br><br>
+        <label>请输入生产日期</label> <input type="date" id="production"/><br><br>
+        <input type="button" value="保存机动车信息" onclick="save()"/>
+    </div>
+</div>
+</body>
+<script src="/js/jquery.min.js"></script>
+<script>
+
+    function save() {
+        var DirverNo = $("#DirverNo").val();
+        var number_plate = $("#number_plate").val();
+        var model = $("#model").val();
+        var manufacturer = $("#manufacturer").val();
+        var production = $("#production").val();
+        var data = {
+            'DirverNo': DirverNo,
+            'numberPlate': number_plate,
+            'model': model,
+            'manufacturer': manufacturer,
+            'production': production
+        };
+        $.post("/addCar", data, function (result) {
+            if (result.code == 200) {
+                alert("保存成功");
+            } else
+                alert(result.msg);
+        });
+    }
+
+    //确认违章车牌号
+    function determine() {
+        var DirverNo = $("#DirverNo").val();
+        var data = {
+            'DirverNo': DirverNo
+        };
+        $.post("/determineDN", data, function (result) {
+            if (result.code == 200)
+                alert("驾驶证号：" + result.data.num + "\n" +
+                    "姓名：" + result.data.name + "\n" + "地址：" + result.data.address +
+                    "\n电话：" + result.data.phone);
+            else {
+                alert(result.msg);
+            }
+        });
+    }
+</script>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>交通违章通知书</title>
+</head>
+<body>
+<div style="margin:0 auto;width: 60%">
+    <h2>交通违章通知书:</h2><br>
+    <span style="font-size: 22px" th:text="'编号：'+${Ticket.getId()}"></span>
+    <table border="1" cellspacing="0" style="margin:0 auto;width: 100%">
+        <tr>
+            <td>
+                <div>
+                    <span th:text="'姓名：'+${Ticket.getCarEntity().getDirverEntity().getName()}"></span> <span
+                        th:text="'驾驶执照号：'+${Ticket.getCarEntity().getDirverEntity().getNum()}"></span><br>
+                    <span th:text="'地址：'+${Ticket.getCarEntity().getDirverEntity().getAddress()}"></span><br>
+                    <span th:text="'邮编：'+${Ticket.getCarEntity().getDirverEntity().getZip()}"></span> <span
+                        th:text="'电话：'+${Ticket.getCarEntity().getDirverEntity().getPhone()}"></span>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div>
+                    <span th:text="'机动车牌照号：'+${Ticket.getCarEntity().getNumberPlate()}"></span><br>
+                    <span th:text="'型号：'+${Ticket.getCarEntity().getModel()}"></span><br>
+                    <span th:text="'制造厂：'+${Ticket.getCarEntity().getManufacturer()}"></span> <span
+                        th:text="'生产日期：'+${Production}"></span>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div>
+                    <span th:text="'违章日期：'+${ViolationDate}"></span> <span th:text="'时间：'+${NoticeTime}"></span><br>
+                    <span th:text="'地点：'+${Ticket.getAddress()}"></span><br>
+                    <span th:text="'违章记载：'+${Ticket.getRecord()}"></span>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div>
+                    <span>处罚方式：</span><br>
+                    <label><input name="dtype" th:checked="${select1}" type="checkbox"  disabled=“disabled”/>警告 </label><br>
+                    <label><input name="dtype" th:checked="${select2}" type="checkbox"  disabled=“disabled”/>罚款 </label><br>
+                    <label><input name="dtype" th:checked="${select3}" type="checkbox"  disabled=“disabled”/>暂扣驾驶证 </label>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span th:text="'警察签字：'+${Ticket.getPoliceName()}"></span> <span
+                    th:text="'警察编号：'+${Ticket.getPoliceNo()}"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span th:text="'被处罚人签字：'+${Ticket.getPartyName()}"></span>
+            </td>
+        </tr>
+    </table>
+
+</div>
+</body>
+</html>
